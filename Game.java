@@ -14,12 +14,16 @@
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private static Room currentRoom, previousRoom;
+    private Items currentItem;
     private Room office, space, outside;
+    private static ArrayList<Items> ItemList = new ArrayList<>();
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +31,7 @@ public class Game
     public Game() 
     {
         createRooms();
+        createItems();
         parser = new Parser();
     }
 
@@ -37,8 +42,6 @@ public class Game
     {
         Room pluto, neptune, uranus, saturn, jupiter, mars,
         mercury, venus;
-        
-        Items spaceFruit, spaceGold, spaceSnake;
       
         // create the rooms
         space = new Room("in a numbing void sprinkled with trillions of unsetlingly bright yet underwelming sprites. (it's space) ");
@@ -53,10 +56,6 @@ public class Game
         venus = new Room("in Venus, an even HOTTER place.");
         outside = new Room("So, you have decided to quit your meaningless job and move on to bigger and better things. NO more wasting away in an office dreaming about the wonders of the world which you would never experience. You have decided to grasp your own life with both hands and yank it towards the direction of your dreams. I respect that, I really do. Have a fantastic life sweet prince.");
         
-        // create the items
-        spaceFruit = new Items("An unknown and totaly edible alien substance (it's a space fruit).", 3.0);
-        spaceGold = new Items("Its beautiful (it's a ingot of space gold)", 30.0);
-        spaceSnake = new Items("It Moves! (it's a space Snake)", 7.0);
         // initialise room exits
         space.setExit("Mercury", mercury);
         space.setExit("Venus", venus);
@@ -66,60 +65,54 @@ public class Game
         space.setExit("Uranus", uranus);
         space.setExit("Neptune", neptune);
         space.setExit("Pluto", pluto);
-        space.setItem(spaceSnake);
-        space.setItemCase("snake");
         
         office.setExit("Leave", outside);
 
         mercury.setExit("launch", space);
         mercury.setExit("Venus", venus);
         mercury.setExit("Mars", mars);
-        mercury.setItem(spaceFruit);
-        mercury.setItemCase("fruit");
 
         venus.setExit("launch", space);
         venus.setExit("Mercury", mercury);
-        venus.setItem(spaceSnake);
-        venus.setItemCase("snake");
 
         mars.setExit("launch", space);
         mars.setExit("Mercury", mercury);
         mars.setExit("Jupiter", jupiter);
-        mars.setItem(spaceGold);
-        mars.setItemCase("gold");
         
         jupiter.setExit("launch", space);
         jupiter.setExit("Mars", mars);
         jupiter.setExit("Saturn", saturn);
-        jupiter.setItem(spaceFruit);
-        jupiter.setItemCase("fruit");
         
         saturn.setExit("launch", space);
         saturn.setExit("Jupiter", jupiter);
         saturn.setExit("Uranus", uranus);
-        saturn.setItem(spaceSnake);
-        saturn.setItemCase("snake");
         
         uranus.setExit("launch", space);
         uranus.setExit("Saturn", saturn);
         uranus.setExit("Neptune", neptune);
-        uranus.setItem(spaceGold);
-        uranus.setItemCase("gold");
         
         neptune.setExit("launch", space);
         neptune.setExit("Uranus", uranus);
         neptune.setExit("Pluto", pluto);
-        neptune.setItem(spaceFruit);
-        neptune.setItemCase("fruit");
         
         pluto.setExit("launch", space);
         pluto.setExit("Neptune", neptune);
-        pluto.setItem(spaceSnake);
-        pluto.setItemCase("snake");
         
         
 
         currentRoom = office;  // start game in the office
+    }
+    
+    private void createItems() {
+        Items spaceFruit, spaceGold, spaceSnake;
+      
+        spaceFruit = new Items("An unknown and totaly edible alien substance (it's a space fruit).", 3.0, "fruit");
+        spaceGold = new Items("Its beautiful (it's a ingot of space gold)", 30.0, "gold");
+        spaceSnake = new Items("It Moves! (it's a space Snake)", 7.0, "snake");
+        
+        ItemList.add(spaceFruit);
+        ItemList.add(spaceGold);
+        ItemList.add(spaceSnake);
     }
 
     /**
@@ -135,7 +128,7 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            finished = currentRoom.checkifDied();
+            finished = currentRoom.checkIfDied();
             if(currentRoom == outside) 
             {
                System.out.println(currentRoom.getShortDescription());
@@ -155,7 +148,7 @@ public class Game
         System.out.println("Office adventure is dope, lets start.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(currentRoom.getMediumDescription());
     }
 
     /**
@@ -168,6 +161,8 @@ public class Game
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
+        
+        String action;
 
         switch (commandWord) {
             case UNKNOWN:
@@ -182,6 +177,14 @@ public class Game
                 goRoom(command);
                 break;
                 
+            case GO:
+                goRoom(command);
+                break;
+                
+            case BACK:
+                goBack();
+                break;
+                
             case WAKE:
                 goOffice();
                 break;
@@ -194,8 +197,19 @@ public class Game
                 Encounter();
                 break;
                 
-            case ACTION:
-                commitAction(command);
+            case TAKE:
+                action = "take";
+                commitAction(action);
+                break;
+                
+            case EAT:
+                action = "eat";
+                commitAction(action);
+                break;
+                
+            case PUNCH:
+                action = "punch";
+                commitAction(action);
                 break;
                 
             case QUIT:
@@ -203,8 +217,8 @@ public class Game
                 break;
                 
             case INVENTORY:
-                System.out.println("You have " + currentRoom.getGold() + " gold, which weighs " + currentRoom.getGoldWeight() + " pounds.");
-                System.out.println("You have " + currentRoom.getFruit() + " fruit, which weighs " + currentRoom.getFruitWeight() + " pounds.");
+                System.out.println("You have " + Inventory.getGold() + " gold, which weighs " + Inventory.getGoldWeight() + " pounds.");
+                System.out.println("You have " + Inventory.getFruit() + " fruit, which weighs " + Inventory.getFruitWeight() + " pounds.");
                 break;
         }
         return wantToQuit;
@@ -247,7 +261,11 @@ public class Game
             System.out.println("m do that! You WILL die");
         }
         else {
+            previousRoom = currentRoom;
             currentRoom = nextRoom;
+            
+            currentItem = randomItems();
+            currentRoom.setItem(currentItem);
             if(nextRoom != outside) {
                 System.out.println(currentRoom.getLongDescription());
             }
@@ -258,6 +276,7 @@ public class Game
     {
       if(currentRoom != office)
       {
+          currentItem = null;
           currentRoom = office;
           System.out.println(currentRoom.getMediumDescription());
       } else {
@@ -269,6 +288,7 @@ public class Game
     {
         if(currentRoom == office) 
         {
+          currentItem = null;
           currentRoom = space;
           System.out.println(currentRoom.getMediumDescription());
         } else {
@@ -276,24 +296,37 @@ public class Game
         }
     }
     
-    private void Encounter()
-    {
-        currentRoom.encounter();
+    private void goBack() {       
+        currentRoom = previousRoom;
+        System.out.println(currentRoom.getLongDescription());
     }
     
-    private void commitAction(Command command)
+    private void Encounter()
     {
-        boolean checkDead = false;
-        String action = command.getSecondWord();
+        if(currentItem == null) {
+            System.out.println("There is no item here");
+            
+        } else {
+        currentRoom.encounter();
+       }
+    }
+    
+    private void commitAction(String action)
+    {
+        if(currentItem == null) {
+            System.out.println("There is no item to interact with here.");
+        } else {boolean checkDead = false;
         currentRoom.action(action);
-        checkDead = currentRoom.checkifDied();
+        checkDead = currentRoom.checkIfDied();
         if(checkDead == true)
         {
             System.out.println("Well done");
         } else {
         System.out.println(currentRoom.getMediumDescription());
+        
+        }
       }
-    }
+    }   
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
@@ -309,5 +342,10 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    public Items randomItems() {
+        Random oRand = new Random(); 
+        return (ItemList.get(oRand.nextInt(2)));       
     }
 }

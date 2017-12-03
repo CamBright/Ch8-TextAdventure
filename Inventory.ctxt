@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=Inventory
+comment0.text=\n\ Write\ a\ description\ of\ class\ Inventory\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=Gold
+comment1.target=void\ setGold(int)
+comment2.params=Fruit
+comment2.target=void\ setFruit(int)
+comment3.params=FruitWeight
+comment3.target=void\ setFruitWeight(double)
+comment4.params=GoldWeight
+comment4.target=void\ setGoldWeight(double)
+comment5.params=
+comment5.target=int\ getFruit()
+comment6.params=
+comment6.target=int\ getGold()
+comment7.params=
+comment7.target=double\ getFruitWeight()
+comment8.params=
+comment8.target=double\ getGoldWeight()
+numComments=9

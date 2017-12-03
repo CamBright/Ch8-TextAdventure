@@ -23,7 +23,6 @@ public class Room
     private HashMap<String, Room> exits;
     private Items RoomItem;
     private String ItemCase;
-    private boolean died = false;
     private int gold, fruit;
     private double goldWeightTotal, fruitWeightTotal;// stores exits of this room.
 
@@ -54,14 +53,8 @@ public class Room
         exits.put(direction, neighbor);
     }
     
-    public void setItem(Items Item) 
-    {
-        RoomItem = Item;
-    }
-    
-    public void setItemCase(String Case)
-    {
-        ItemCase = Case;
+    public Items getItem() {
+        return RoomItem;
     }
 
     /**
@@ -115,6 +108,10 @@ public class Room
         return exits.get(direction);
     }
     
+    public void setItem(Items Item) {
+        RoomItem = Item;
+    }
+    
     public void encounter() 
     {
         System.out.println(RoomItem.getItemDescription());
@@ -128,43 +125,15 @@ public class Room
     {
         switch(action) {
             
-            case "punch":        if(ItemCase == "fruit")
-                          {
-                              System.out.println("You squashed the fruit.");
-                          } else if(ItemCase == "snake") {
-                              System.out.println("You killed the snake.");
-                          } else if(ItemCase == "gold") {
-                              System.out.println("You hurt your hand (good job)");
-                          } 
-                          
-                    
+            
+            case "punch": RoomItem.actionPunch();
                 break;
                 
-            case "eat":         if(ItemCase == "fruit")
-                          {
-                              System.out.println("You consumed the fruit.");
-                          } else if(ItemCase == "snake") {
-                              System.out.println("You ate the snake (you gain a stomach ache).");
-                          } else if(ItemCase == "gold") {
-                              System.out.println("You tried to eat the gold (You die).");
-                              this.died = true;
-                          } 
+            case "eat": RoomItem.actionEat();  
                           
-                break;
+                break; 
                 
-            case "take":     if(ItemCase == "fruit")
-                          {
-                              System.out.println("You gain the fruit.");
-                              this.fruit += 1;
-                              this.fruitWeightTotal += RoomItem.getItemWeight();
-                          } else if(ItemCase == "snake") {
-                              System.out.println("You try to take the snake (you die),");
-                              this.died = true;
-                          } else if(ItemCase == "gold") {
-                              System.out.println("You gain 1 gold");
-                              this.gold += 1;
-                              this.goldWeightTotal += RoomItem.getItemWeight();
-                          } 
+            case "take": RoomItem.actionTake();
                           
                 break;
             
@@ -173,29 +142,13 @@ public class Room
         }
     }
     
-    public boolean checkifDied() 
-    {
-        return this.died;
-    }
-    
-    public int getGold() 
-    {
-        return this.gold;
-    }
-    
-    public int getFruit()
-    {
-        return this.fruit;
-    }
-    
-    public double getFruitWeight()
-    {
-        return this.fruitWeightTotal;
-    }
-    
-    public double getGoldWeight()
-    {
-        return this.goldWeightTotal;
+    public boolean checkIfDied() {
+        if (RoomItem == null) {
+            
+            return false;
+        } else {
+        return RoomItem.ifDiedFromItem();
+       }
     }
 }
 
