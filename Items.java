@@ -55,7 +55,7 @@ public class Items
         System.out.println("eat? punch? take? or nothing");      
     }
     
-    public void actionPunch() {
+    public boolean actionPunch() {
             if(Case == "fruit")
               {
                 System.out.println("You squashed the fruit.");
@@ -64,9 +64,10 @@ public class Items
               } else if(Case == "gold") {
                 System.out.println("You hurt your hand (good job)");
               } 
+              return false;
     }
     
-    public void actionEat() {
+    public boolean actionEat() {
             if(Case == "fruit")
               {
                   System.out.println("You consumed the fruit.");
@@ -76,9 +77,10 @@ public class Items
                   System.out.println("You tried to eat the gold (You die).");
                   ifDiedFromItem = true;
               } 
+              return false;
     }
     
-    public void actionTake() {
+    public boolean actionTake() {
             if(Case == "fruit")
               {
                   System.out.println("You gain the fruit.");
@@ -94,7 +96,9 @@ public class Items
                   gold += 1;
                   Inventory.setGold(this.gold);
                   goldWeightTotal += weight;
-              }  
+                  Inventory.setGoldWeight(goldWeightTotal);
+              }
+              return false;
     }
     
     public boolean ifDiedFromItem() {

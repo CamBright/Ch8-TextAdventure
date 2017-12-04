@@ -316,7 +316,7 @@ public class Game
         if(currentItem == null) {
             System.out.println("There is no item to interact with here.");
         } else {boolean checkDead = false;
-        currentRoom.action(action);
+        boolean currentItemExist = currentRoom.action(action);
         checkDead = currentRoom.checkIfDied();
         if(checkDead == true)
         {
@@ -324,6 +324,9 @@ public class Game
         } else {
         System.out.println(currentRoom.getMediumDescription());
         
+        }
+        if (currentItemExist == false) {
+            currentItem = null;
         }
       }
     }   

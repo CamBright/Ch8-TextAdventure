@@ -121,25 +121,27 @@ public class Room
         
     }
     
-    public void action(String action)
+    public boolean action(String action)
     {
+        boolean ItemExist = true;
         switch(action) {
             
             
-            case "punch": RoomItem.actionPunch();
+            case "punch": ItemExist = RoomItem.actionPunch();
                 break;
                 
-            case "eat": RoomItem.actionEat();  
+            case "eat": ItemExist = RoomItem.actionEat();  
                           
                 break; 
                 
-            case "take": RoomItem.actionTake();
+            case "take": ItemExist = RoomItem.actionTake();
                           
                 break;
             
             case "nothing": 
                 break;
         }
+        return ItemExist;
     }
     
     public boolean checkIfDied() {
