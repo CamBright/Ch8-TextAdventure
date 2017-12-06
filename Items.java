@@ -13,6 +13,8 @@ public class Items
     private double weight;
     private int fruit;
     private int gold;
+    private boolean booster;
+    private double boosterWeightTotal; 
     private double fruitWeightTotal;
     private double goldWeightTotal;
     boolean ifDiedFromItem;
@@ -63,7 +65,10 @@ public class Items
                 System.out.println("You killed the snake.");
               } else if(Case == "gold") {
                 System.out.println("You hurt your hand (good job)");
-              } 
+              } else if(Case == "booster") {
+                System.out.println("uuuhhhh... ka-boom");
+                ifDiedFromItem = true;
+              }
               return false;
     }
     
@@ -76,7 +81,11 @@ public class Items
               } else if(Case == "gold") {
                   System.out.println("You tried to eat the gold (You die).");
                   ifDiedFromItem = true;
-              } 
+              }  else if(Case == "booster") {
+                  System.out.println("good job, you figured out just the right thing to do with the booster!");
+                  System.out.println("you died");
+                  ifDiedFromItem = true;
+              }
               return false;
     }
     
@@ -97,6 +106,12 @@ public class Items
                   Inventory.setGold(this.gold);
                   goldWeightTotal += weight;
                   Inventory.setGoldWeight(goldWeightTotal);
+              } else if(Case == "booster") {
+                  System.out.println("You gain the booster!");
+                  booster = true;
+                  Inventory.setBooster(true);
+                  boosterWeightTotal = weight;
+                  Inventory.setBoosterWeight(boosterWeightTotal);
               }
               return false;
     }

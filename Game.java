@@ -22,7 +22,8 @@ public class Game
     private Parser parser;
     private static Room currentRoom, previousRoom;
     private Items currentItem;
-    private Room office, space, outside;
+    private Room office, space, outside, pluto, neptune, uranus, saturn, jupiter, mars,
+        mercury, venus, ceres;;
     private static ArrayList<Items> ItemList = new ArrayList<>();
         
     /**
@@ -40,8 +41,6 @@ public class Game
      */
     private void createRooms()
     {
-        Room pluto, neptune, uranus, saturn, jupiter, mars,
-        mercury, venus;
       
         // create the rooms
         space = new Room("in a numbing void sprinkled with trillions of unsetlingly bright yet underwelming sprites. (it's space) ");
@@ -50,6 +49,7 @@ public class Game
         uranus = new Room("in a land of poor pronunciation");
         saturn = new Room("in a plane of dust");
         jupiter = new Room("in a swallowing cloud of gas");
+        ceres = new Room("You gaze upon a steep plain of rock and dust illuminated by the deep glow of the giant neighboring gas planet. (You are on the moon Ceres)");
         mars = new Room("in a mars bar");
         office = new Room("in an office (for some reason, you dont question it), sleep to begin your journey through space");
         mercury = new Room("in Mercury, a HOT place");
@@ -82,6 +82,10 @@ public class Game
         jupiter.setExit("launch", space);
         jupiter.setExit("Mars", mars);
         jupiter.setExit("Saturn", saturn);
+        jupiter.setExit("Ceres", ceres);
+        
+        ceres.setExit("launch", space);
+        ceres.setExit("Jupiter", jupiter);
         
         saturn.setExit("launch", space);
         saturn.setExit("Jupiter", jupiter);
@@ -104,15 +108,17 @@ public class Game
     }
     
     private void createItems() {
-        Items spaceFruit, spaceGold, spaceSnake;
+        Items spaceFruit, spaceGold, spaceSnake, spaceBooster;
       
         spaceFruit = new Items("An unknown and totaly edible alien substance (it's a space fruit).", 3.0, "fruit");
         spaceGold = new Items("Its beautiful (it's a ingot of space gold)", 30.0, "gold");
         spaceSnake = new Items("It Moves! (it's a space Snake)", 7.0, "snake");
+        spaceBooster = new Items("It's the key! (it seems as though it can be used to progress the game! or something like that..)", 400.0, "booster");
         
         ItemList.add(spaceFruit);
         ItemList.add(spaceGold);
         ItemList.add(spaceSnake);
+        ItemList.add(spaceBooster);
     }
 
     /**
@@ -217,8 +223,14 @@ public class Game
                 break;
                 
             case INVENTORY:
+             
                 System.out.println("You have " + Inventory.getGold() + " gold, which weighs " + Inventory.getGoldWeight() + " pounds.");
                 System.out.println("You have " + Inventory.getFruit() + " fruit, which weighs " + Inventory.getFruitWeight() + " pounds.");
+                if(Inventory.getBooster() == true) {
+                   System.out.println("You have the booster!!(use it in space!), it weighs " + Inventory.getBoosterWeight() + " pounds."); 
+                }
+                
+            
                 break;
         }
         return wantToQuit;
@@ -258,15 +270,20 @@ public class Game
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("m do that! You WILL die");
+            System.out.println("Don't do that! You WILL die");
         }
         else {
             previousRoom = currentRoom;
             currentRoom = nextRoom;
             
+            if(currentRoom == ceres) {
+                currentItem = ItemList.get(3);
+                currentRoom.setItem(currentItem);
+            } else {
             currentItem = randomItems();
             currentRoom.setItem(currentItem);
-            if(nextRoom != outside) {
+           }
+           if(nextRoom != outside) {
                 System.out.println(currentRoom.getLongDescription());
             }
         }

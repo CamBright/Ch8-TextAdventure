@@ -10,8 +10,10 @@ public class Inventory
     // instance variables - replace the example below with your own
     private static int fruit;
     private static int gold = 0;
+    private static boolean booster = false;
     private static double fruitWeightTotal;
     private static double goldWeightTotal;
+    private static double boosterWeightTotal;
 
     public static void setGold(int Gold) 
     {
@@ -21,6 +23,10 @@ public class Inventory
     public static void setFruit(int Fruit)
     {
         fruit = Fruit;
+    }
+    
+    public static void setBooster(boolean Booster) {
+        booster = Booster;
     }
     
     public static void setFruitWeight(double FruitWeight)
@@ -33,6 +39,11 @@ public class Inventory
         goldWeightTotal = GoldWeight;
     }
     
+    public static void setBoosterWeight(double BoosterWeight)
+    {
+        boosterWeightTotal = BoosterWeight;
+    }
+    
     public static int getFruit() {
         return fruit;
     }
@@ -41,11 +52,19 @@ public class Inventory
         return gold;
     }
     
+    public static boolean getBooster() {
+        return booster;
+    }
+    
     public static double getFruitWeight() {
         return fruitWeightTotal;
     }
     
     public static double getGoldWeight() {
         return goldWeightTotal;
+    }
+    
+    public static double getBoosterWeight() {
+        return boosterWeightTotal;
     }
 }

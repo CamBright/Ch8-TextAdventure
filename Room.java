@@ -115,7 +115,7 @@ public class Room
     public void encounter() 
     {
         System.out.println(RoomItem.getItemDescription());
-        System.out.println("This Item Weighs" + RoomItem.getItemWeight() + " pounds.");
+        System.out.println("This Item Weighs " + RoomItem.getItemWeight() + " pounds.");
         System.out.println("What would you like to do?");
         System.out.println("eat? punch? take? or nothing");
         
