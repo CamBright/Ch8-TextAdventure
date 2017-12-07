@@ -25,6 +25,7 @@ public class Game
     private Room office, space, outside, pluto, neptune, uranus, saturn, jupiter, mars,
         mercury, venus, ceres;;
     private static ArrayList<Items> ItemList = new ArrayList<>();
+    private boolean BoosterUsed = false;
         
     /**
      * Create the game and initialise its internal map.
@@ -129,12 +130,19 @@ public class Game
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-        boolean finished = false;        
+        // execute them until the game is over.  
+        boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
             finished = currentRoom.checkIfDied();
+            if(BoosterUsed == true) {
+                System.out.println("You use the booster to blast off into the void, you embark on your next big adventure... which is all just in your head. You wake up in your office, and begin working.");
+                finished = true;
+            }
+            if(currentRoom == space && Inventory.getBooster() == true) {
+               System.out.println("You have the booster, press enter 'use' to use it");
+            }
             if(currentRoom == outside) 
             {
                System.out.println(currentRoom.getShortDescription());
@@ -218,6 +226,10 @@ public class Game
                 commitAction(action);
                 break;
                 
+            case USE:
+                useBooster();
+                break;
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -275,7 +287,6 @@ public class Game
         else {
             previousRoom = currentRoom;
             currentRoom = nextRoom;
-            
             if(currentRoom == ceres) {
                 currentItem = ItemList.get(3);
                 currentRoom.setItem(currentItem);
@@ -361,6 +372,12 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+    
+    public void useBooster() {
+        if(Inventory.getBooster() == true) {
+            BoosterUsed = true;
         }
     }
     
