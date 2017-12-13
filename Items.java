@@ -1,13 +1,10 @@
 
 /**
- * Write a description of class Items here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * This class sets the properties and encounters with items in the game.
  */
 public class Items
 {
-    // instance variables - replace the example below with your own
+    // variables of item class
     private String description;
     private String Case;
     private double weight;
@@ -21,6 +18,7 @@ public class Items
 
     /**
      * Constructor for objects of class Items
+     * @param String description, double weight, String Case
      */
     public Items(String description, double weight, String Case)
     {
@@ -35,20 +33,32 @@ public class Items
         this.ifDiedFromItem = false;
     }
     
+    /**
+     * @return Item Description.
+     */
     public String getItemDescription() 
     {
         return description;
     }
     
+    /**
+     * @return Item Case.
+     */
     public String getCase() {
         return Case;
     }
     
+    /**
+     * @return Item Weight.
+     */
     public double getItemWeight() 
     {
        return weight; 
     }
     
+    /**
+     * Print item encounter when called.
+     */
     public void encounter() 
     {
         System.out.println(description);
@@ -57,6 +67,12 @@ public class Items
         System.out.println("eat? punch? take? or nothing");      
     }
     
+    /**
+     * Prompting user to comit the punch action with the item and checking to
+     * see what happens with specific items.
+     * @return False when item is encountered.
+     * Set game over to true if user dies.
+     */
     public boolean actionPunch() {
             if(Case == "fruit")
               {
@@ -72,6 +88,12 @@ public class Items
               return false;
     }
     
+    /**
+     * Prompting user to comit the eat action with the item and checking to
+     * see what happens with specific items.
+     * @return False when item is encountered.
+     * Set game over to true if user dies.
+     */
     public boolean actionEat() {
             if(Case == "fruit")
               {
@@ -89,6 +111,13 @@ public class Items
               return false;
     }
     
+    /**
+     * Prompting user to comit the punch action with the item and checking to
+     * see what happens with specific items.
+     * @return False when item is encountered.
+     * Set game over to true if user dies.
+     * Set inventory with taken item.
+     */
     public boolean actionTake() {
             if(Case == "fruit")
               {
@@ -116,7 +145,10 @@ public class Items
               return false;
     }
     
+    /**
+     * @return boolean ifDiedFromItem.
+     */
     public boolean ifDiedFromItem() {
-        return this.ifDiedFromItem;
+        return ifDiedFromItem;
     }
 }

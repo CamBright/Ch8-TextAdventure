@@ -1,20 +1,20 @@
 import java.util.Set;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the Space Adventure application. 
+ * Space Adventure is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
  * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Cameron Brightwell
+ * @version 2017
  */
 
 public class Room 
@@ -53,6 +53,9 @@ public class Room
         exits.put(direction, neighbor);
     }
     
+    /**
+     * @return item in the current room.
+     */
     public Items getItem() {
         return RoomItem;
     }
@@ -67,9 +70,7 @@ public class Room
     }
 
     /**
-     * Return a description of the room in the form:
-     *     You are in the kitchen.
-     *     Exits: north west
+     * Return a description of the room in the form.
      * @return A long description of this room
      */
     public String getLongDescription()
@@ -77,14 +78,17 @@ public class Room
         return "You are " + description + ".\n" + getExitString() + "\n" + "You see an item in the distance.";
     }
     
+    /**
+     * Return a description of the room in the form.
+     * @return A medium description of this room
+     */
     public String getMediumDescription()
     {
         return "You are " + description + ".\n" + getExitString();
     }
 
     /**
-     * Return a string describing the room's exits, for example
-     * "Exits: north west".
+     * Return a string describing the room's exits.
      * @return Details of the room's exits.
      */
     private String getExitString()
@@ -108,10 +112,17 @@ public class Room
         return exits.get(direction);
     }
     
+    /**
+     * Set the current room item.
+     * @param Items Item.
+     */
     public void setItem(Items Item) {
         RoomItem = Item;
     }
     
+    /**
+     * Describe the encounter of the item to the user.
+     */
     public void encounter() 
     {
         System.out.println(RoomItem.getItemDescription());
@@ -121,6 +132,11 @@ public class Room
         
     }
     
+    /**
+     * Connect the users action with what would happen with the specific item.
+     * @param String action.
+     * @return boolean ItemExist
+     */
     public boolean action(String action)
     {
         boolean ItemExist = true;

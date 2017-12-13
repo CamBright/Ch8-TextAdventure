@@ -1,6 +1,6 @@
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
+ *  This class is the main class of the Space Adventure application. 
+ *  This is a very simple, text based adventure game.  Users 
  *  can walk around some scenery. That's all. It should really be extended 
  *  to make it more interesting!
  * 
@@ -12,7 +12,8 @@
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Cameron Brightwell
+ * @version 2017
  */
 import java.util.ArrayList;
 import java.util.Random;
@@ -109,13 +110,16 @@ public class Game
     }
     
     private void createItems() {
+        // Create items.
         Items spaceFruit, spaceGold, spaceSnake, spaceBooster;
       
+        // initialize item descriptions, weight and case.
         spaceFruit = new Items("An unknown and totaly edible alien substance (it's a space fruit).", 3.0, "fruit");
         spaceGold = new Items("Its beautiful (it's a ingot of space gold)", 30.0, "gold");
         spaceSnake = new Items("It Moves! (it's a space Snake)", 7.0, "snake");
         spaceBooster = new Items("It's the key! (it seems as though it can be used to progress the game! or something like that..)", 400.0, "booster");
         
+        // add items to an array.
         ItemList.add(spaceFruit);
         ItemList.add(spaceGold);
         ItemList.add(spaceSnake);
@@ -135,21 +139,21 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            finished = currentRoom.checkIfDied();
-            if(BoosterUsed == true) {
+            finished = currentRoom.checkIfDied(); // Check if user died
+            if(BoosterUsed == true) { // End game if booster is used.
                 System.out.println("You use the booster to blast off into the void, you embark on your next big adventure... which is all just in your head. You wake up in your office, and begin working.");
                 finished = true;
             }
-            if(currentRoom == space && Inventory.getBooster() == true) {
+            if(currentRoom == space && Inventory.getBooster() == true) { // Prompt user of booster.
                System.out.println("You have the booster, press enter 'use' to use it");
             }
-            if(currentRoom == outside) 
+            if(currentRoom == outside) // End game if user is outsie the office.
             {
                System.out.println(currentRoom.getShortDescription());
                finished = true;
             } 
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye."); // End game message.
     }
 
     /**
@@ -287,10 +291,10 @@ public class Game
         else {
             previousRoom = currentRoom;
             currentRoom = nextRoom;
-            if(currentRoom == ceres) {
+            if(currentRoom == ceres) { // Set ceres item to booster.
                 currentItem = ItemList.get(3);
                 currentRoom.setItem(currentItem);
-            } else {
+            } else { // Randomize items.
             currentItem = randomItems();
             currentRoom.setItem(currentItem);
            }
@@ -300,6 +304,9 @@ public class Game
         }
     }
     
+    /**
+     * Wake player up back into the office.
+     */
     private void goOffice()
     {
       if(currentRoom != office)
@@ -312,6 +319,9 @@ public class Game
       }
     }
     
+    /**
+     * Player falls asleep, going to space!
+     */
     private void goSpace()
     {
         if(currentRoom == office) 
@@ -324,11 +334,17 @@ public class Game
         }
     }
     
+    /**
+     * Implimenting the go back one room command.
+     */
     private void goBack() {       
         currentRoom = previousRoom;
         System.out.println(currentRoom.getLongDescription());
     }
     
+    /**
+     * Call when user encounters an item.
+     */
     private void Encounter()
     {
         if(currentItem == null) {
@@ -339,9 +355,13 @@ public class Game
        }
     }
     
+    /**
+     * Call when player chooses an action
+     * @param String action.
+     */
     private void commitAction(String action)
     {
-        if(currentItem == null) {
+        if(currentItem == null) { // If there is no item, tell the player.
             System.out.println("There is no item to interact with here.");
         } else {boolean checkDead = false;
         boolean currentItemExist = currentRoom.action(action);
@@ -375,12 +395,19 @@ public class Game
         }
     }
     
+    /**
+     * Impliment the use command to finish the came
+     */ 
     public void useBooster() {
         if(Inventory.getBooster() == true) {
             BoosterUsed = true;
         }
     }
     
+    /**
+     * Randomize items in an array list.
+     * @return random item from array list.
+     */
     public Items randomItems() {
         Random oRand = new Random(); 
         return (ItemList.get(oRand.nextInt(2)));       
