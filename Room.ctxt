@@ -12,6 +12,7 @@ comment11.target=boolean\ action(java.lang.String)
 comment11.text=\n\ Connect\ the\ users\ action\ with\ what\ would\ happen\ with\ the\ specific\ item.\n\ @param\ String\ action.\n\ @return\ boolean\ ItemExist\n
 comment12.params=
 comment12.target=boolean\ checkIfDied()
+comment12.text=\n\ Checks\ if\ there\ is\ an\ item\ in\ the\ room.\n\ Checks\ if\ the\ item\ in\ the\ room\ killed\ the\ user.\n\ @returns\ boolean\ ifDied.\n
 comment2.params=direction\ neighbor
 comment2.target=void\ setExit(java.lang.String,\ Room)
 comment2.text=\n\ Define\ an\ exit\ from\ this\ room.\n\ @param\ direction\ The\ direction\ of\ the\ exit.\n\ @param\ neighbor\ \ The\ room\ to\ which\ the\ exit\ leads.\n

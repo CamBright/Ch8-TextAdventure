@@ -160,6 +160,11 @@ public class Room
         return ItemExist;
     }
     
+    /**
+     * Checks if there is an item in the room.
+     * Checks if the item in the room killed the user.
+     * @returns boolean ifDied.
+     */
     public boolean checkIfDied() {
         if (RoomItem == null) {
             

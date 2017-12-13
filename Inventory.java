@@ -4,8 +4,8 @@
  * until the user picks up a new item, then the inventory will recalculate its 
  * atributes including the new item.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Cameron Brightwell
+ * @version 2017
  */
 public class Inventory
 {
